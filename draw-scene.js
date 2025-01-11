@@ -1,4 +1,4 @@
-function drawScene(gl, programInfo, buffers, squareRotation) {
+function drawScene(gl, programInfo, buffers, cubeRotation) {
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clearDepth(1.0);
   gl.enable(gl.DEPTH_TEST);
@@ -17,10 +17,13 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
   const modelViewMatrix = mat4.create();
 
   mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
-  mat4.rotate(modelViewMatrix, modelViewMatrix, squareRotation, [0, 0, 1]);
+  mat4.rotate(modelViewMatrix, modelViewMatrix, cubeRotation, [0, 0, 1]); // Z axis
+  mat4.rotate(modelViewMatrix, modelViewMatrix, cubeRotation * 0.7, [0, 1, 0]); // Y axis
+  mat4.rotate(modelViewMatrix, modelViewMatrix, cubeRotation * 0.3, [1, 0, 0]); // X axis
 
   setPositionAttribute(gl, buffers, programInfo);
   setColorAttribute(gl, buffers, programInfo);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
   gl.useProgram(programInfo.program);
 
@@ -36,14 +39,15 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
   );
 
   {
+    const vertexCount = 36;
+    const type = gl.UNSIGNED_SHORT;
     const offset = 0;
-    const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    gl.drawElements(gl.TRIANLGES, vertexCount, type, offset);
   }
 }
 
 function setPositionAttribute(gl, buffers, programInfo) {
-  const numComponents = 2;
+  const numComponents = 3;
   const type = gl.FLOAT;
   const normalize = false;
   const stride = 0;
