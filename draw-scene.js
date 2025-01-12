@@ -42,7 +42,7 @@ function drawScene(gl, programInfo, buffers, cubeRotation) {
     const vertexCount = 36;
     const type = gl.UNSIGNED_SHORT;
     const offset = 0;
-    gl.drawElements(gl.TRIANLGES, vertexCount, type, offset);
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
   }
 }
 
